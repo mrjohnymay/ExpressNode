@@ -2,6 +2,9 @@ var City = require('../models/city');
 var BookInstance = require('../models/bookinstance');
 var async = require('async');
 
+const { body,validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
+
 // Display list of all Citys.
 exports.city_list = function(req, res, next) {
     //Buscamos todas las ciudades y las ordenamos

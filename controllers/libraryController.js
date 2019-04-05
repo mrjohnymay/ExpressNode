@@ -2,6 +2,9 @@ var Library = require('../models/library');
 var async = require('async');
 var BookInstance = require('../models/bookinstance');
 
+const { body,validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
+
 // Display list of all Authors.
 exports.library_list = function(req, res, next) {
 
@@ -91,6 +94,9 @@ exports.library_create_post = [
                 books: function(callback) {
                     BookInstance.find(callback);
                 },
+                cities: function(callback) {
+                    City.find(callback);
+                }
             }, function(err, results) {
                 if (err) { return next(err); }
 
@@ -100,7 +106,7 @@ exports.library_create_post = [
                         results.books[i].checked='true';
                     }
                 }
-                res.render('library_form', { title: 'Create Library',books:results.books, library: library, errors: errors.array() });
+                res.render('library_form', { title: 'Create Library',books:results.books, library: library,cities: results.cities,  errors: errors.array() });
             });
             return;
         }

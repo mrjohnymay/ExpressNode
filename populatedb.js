@@ -15,6 +15,7 @@ var Book = require('./models/book')
 var Author = require('./models/author')
 var Genre = require('./models/genre')
 var BookInstance = require('./models/bookinstance')
+var Library = require('./models/library')
 
 
 var mongoose = require('mongoose');
@@ -28,6 +29,7 @@ var authors = []
 var genres = []
 var books = []
 var bookinstances = []
+var libraries = []
 
 function authorCreate(first_name, family_name, d_birth, d_death, cb) {
   authordetail = {first_name:first_name , family_name: family_name }
@@ -102,6 +104,40 @@ function bookInstanceCreate(book, imprint, due_back, status, cb) {
     bookinstances.push(bookinstance)
     cb(null, book)
   }  );
+}
+
+function libraryCreate(name, books, city) {
+  librarydetail = { 
+    name: name,
+    books: books,
+    city: city
+  }
+  if (books != false) librarydetail.books = books
+    
+  var library = new Library(librarydetail);    
+  library.save(function (err) {
+    if (err) {
+      cb(err, null)
+      return
+    }
+    console.log('New Library: ' + library);
+    libraries.push(library)
+    cb(null, library)
+  }  );
+}
+
+function cityCreate(name, population) {
+  var city = new City({ name: name, population: population });
+       
+  city.save(function (err) {
+    if (err) {
+      cb(err, null);
+      return;
+    }
+    console.log('New City: ' + city);
+    cities.push(city)
+    cb(null, city);
+  }   );
 }
 
 
@@ -204,6 +240,16 @@ function createBookInstances(cb) {
         ],
         // Optional callback
         cb);
+}
+
+function createLibraries(cb) {
+  async.parallel([
+    function(callback) {
+      libraryCreate("Libreria Alvarez", books[0], city[0])
+    }
+    ],
+    // Optional callback
+    cb);
 }
 
 

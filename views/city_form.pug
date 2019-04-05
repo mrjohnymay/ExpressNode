@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1=title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Name:
+      input#city_name.form-control(type='text' placeholder='Name' name='Name' required='true' value=(undefined===city ? '' : city.name) )
+    div.form-group
+      label(for='population') Population:
+      input#city_population.form-control(type='number' placeholder='Population' required='true'  value=(undefined===city ? '' : city.population))
+    button.btn.btn-primary(type='submit') Submit
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg

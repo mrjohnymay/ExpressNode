@@ -7,6 +7,7 @@ var author_controller = require('../controllers/authorController');
 var genre_controller = require('../controllers/genreController');
 var book_instance_controller = require('../controllers/bookinstanceController');
 var library_controller = require('../controllers/libraryController');
+var city_controller = require('../controllers/cityController');
 
 /// BOOK ROUTES ///
 
@@ -142,7 +143,7 @@ router.get('/library/:id', library_controller.library_detail);
 router.get('/library', library_controller.library_list);
 
 /// CITY ROUTES ///
-/*
+
 // GET request for creating a city. NOTE This must come before route that displays city (uses id).
 router.get('/city/create', city_controller.city_create_get);
 
@@ -165,6 +166,6 @@ router.post('/city/:id/update', city_controller.city_update_post);
 router.get('/city/:id', city_controller.city_detail);
 
 // GET request for list of all city.
-router.get('/citys', city_controller.city_list);*/
+router.get('/citys', city_controller.city_list);
 
 module.exports = router;

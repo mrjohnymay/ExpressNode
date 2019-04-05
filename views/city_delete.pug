@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    h1 #{city.name}
+    p #{city.population}  
+    form(method='POST' action='')
+        div.form-group
+        input#cityid.form-control(type='hidden',name='cityid', required='true', value=city._id )
+
+        button.btn.btn-primary(type='submit') Delete
