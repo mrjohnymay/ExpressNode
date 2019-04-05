@@ -2,7 +2,7 @@ var City = require('../models/city');
 var BookInstance = require('../models/bookinstance');
 var async = require('async');
 
-// Display list of all Genres.
+// Display list of all Citys.
 exports.city_list = function(req, res, next) {
     //Buscamos todas las ciudades y las ordenamos
     City.find()
@@ -15,7 +15,7 @@ exports.city_list = function(req, res, next) {
 
   };
 
-// Display detail page for a specific Genre.
+// Display detail page for a specific City.
 exports.city_detail = function(req, res, next) {
 
     async.parallel({
@@ -27,7 +27,7 @@ exports.city_detail = function(req, res, next) {
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.city==null) { // No results.
-            var err = new Error('Genre not found');
+            var err = new Error('City not found');
             err.status = 404;
             return next(err);
         }
@@ -37,7 +37,7 @@ exports.city_detail = function(req, res, next) {
 
 };
 
-// Display Genre create form on GET.
+// Display City create form on GET.
 exports.city_create_get = function(req, res, next) {     
     res.render('city_form', { title: 'Create City' });
 };
@@ -61,7 +61,7 @@ exports.city_create_post =  [
       // Extract the validation errors from a request.
       const errors = validationResult(req);
   
-      // Create a genre object with escaped and trimmed data.
+      // Create a City object with escaped and trimmed data.
       var city = new City(
         { name: req.body.name,
           population: req.body.population }
@@ -75,20 +75,20 @@ exports.city_create_post =  [
       }
       else {
         // Data from form is valid.
-        // Check if Genre with same name already exists.
+        // Check if City with same name already exists.
         City.findOne({ 'name': req.body.name })
           .exec( function(err, found_city) {
              if (err) { return next(err); }
   
              if (found_city) {
-               // Genre exists, redirect to its detail page.
+               // City exists, redirect to its detail page.
                res.redirect(found_city.url);
              }
              else {
   
                city.save(function (err) {
                  if (err) { return next(err); }
-                 // Genre saved. Redirect to genre detail page.
+                 // City saved. Redirect to City detail page.
                  res.redirect(city.url);
                });
   
@@ -99,22 +99,22 @@ exports.city_create_post =  [
     }
   ];
 
-// Display Genre delete form on GET.
-exports.genre_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre delete GET');
+// Display City delete form on GET.
+exports.city_delete_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: City delete GET');
 };
 
-// Handle Genre delete on POST.
-exports.genre_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre delete POST');
+// Handle City delete on POST.
+exports.city_delete_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: City delete POST');
 };
 
-// Display Genre update form on GET.
-exports.genre_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre update GET');
+// Display City update form on GET.
+exports.city_update_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: City update GET');
 };
 
-// Handle Genre update on POST.
-exports.genre_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre update POST');
+// Handle City update on POST.
+exports.city_update_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: City update POST');
 };

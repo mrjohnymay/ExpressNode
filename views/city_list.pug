@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+  
+  ul
+    each city in city_list
+      li 
+        a(href=city.url) #{city.name} 
+        |  Population (#{city.population})
+
+    else
+      li There are no cities.

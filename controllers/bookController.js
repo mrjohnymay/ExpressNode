@@ -2,6 +2,8 @@ var Book = require('../models/book');
 var Author = require('../models/author');
 var Genre = require('../models/genre');
 var BookInstance = require('../models/bookinstance');
+var Library = require('../models/library');
+var City = require('../models/city');
 
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -25,6 +27,9 @@ exports.index = function(req, res) {
         },
         genre_count: function(callback) {
             Genre.countDocuments({}, callback);
+        },
+        library_count: function(callback) {
+            Library.countDocuments({}, callback);
         }
     }, function(err, results) {
         res.render('index', { title: 'Local Library Home', error: err, data: results });
@@ -41,7 +46,6 @@ exports.book_list = function(req, res, next) {
         //Successful, so render
         res.render('book_list', { title: 'Book List', book_list: list_books });
       });
-      
   };
 
 // Display detail page for a specific book.
@@ -88,7 +92,7 @@ exports.book_create_get = function(req, res, next) {
         if (err) { return next(err); }
         res.render('book_form', { title: 'Create Book', authors: results.authors, genres: results.genres });
     });
-    
+
 };
 
 // Handle book create on POST.

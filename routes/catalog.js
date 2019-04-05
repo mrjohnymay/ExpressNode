@@ -115,4 +115,56 @@ router.get('/bookinstance/:id', book_instance_controller.bookinstance_detail);
 // GET request for list of all BookInstance.
 router.get('/bookinstances', book_instance_controller.bookinstance_list);
 
+/// LIBRARY ROUTES ///
+
+// GET request for creating a BookInstance. NOTE This must come before route that displays BookInstance (uses id).
+router.get('/library/create', library_controller.library_create_get);
+
+// POST request for creating BookInstance. 
+router.post('/library/create', library_controller.library_create_post);
+
+// GET request to delete BookInstance.
+router.get('/library/:id/delete', library_controller.library_delete_get);
+
+// POST request to delete BookInstance.
+router.post('/library/:id/delete', library_controller.library_delete_post);
+
+// GET request to update BookInstance.
+router.get('/library/:id/update', library_controller.library_update_get);
+
+// POST request to update BookInstance.
+router.post('/library/:id/update', library_controller.library_update_post);
+
+// GET request for one BookInstance.
+router.get('/library/:id', library_controller.library_detail);
+
+// GET request for list of all BookInstance.
+router.get('/library', library_controller.library_list);
+
+/// CITY ROUTES ///
+/*
+// GET request for creating a city. NOTE This must come before route that displays city (uses id).
+router.get('/city/create', city_controller.city_create_get);
+
+//POST request for creating city.
+router.post('/city/create', city_controller.city_create_post);
+
+// GET request to delete city.
+router.get('/city/:id/delete', city_controller.city_delete_get);
+
+// POST request to delete city.
+router.post('/city/:id/delete', city_controller.city_delete_post);
+
+// GET request to update city.
+router.get('/city/:id/update', city_controller.city_update_get);
+
+// POST request to update city.
+router.post('/city/:id/update', city_controller.city_update_post);
+
+// GET request for one city.
+router.get('/city/:id', city_controller.city_detail);
+
+// GET request for list of all city.
+router.get('/citys', city_controller.city_list);*/
+
 module.exports = router;

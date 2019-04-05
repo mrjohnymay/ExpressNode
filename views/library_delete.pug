@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 #{title}: #{library.name}
+  
+  p Do you really want to delete this Library?
+  
+  form(method='POST' action='')
+    div.form-group
+      input#libraryid.form-control(type='hidden',name='libraryid', required='true', value=library._id )
+
+    button.btn.btn-primary(type='submit') Delete

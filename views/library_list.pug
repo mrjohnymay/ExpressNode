@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  
+  ul
+    each library in library_list
+      li 
+        a(href=library.url) #{library.name} 
+
+    else
+      li There are no libraries.

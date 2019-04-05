@@ -5,7 +5,7 @@ var BookInstance = require('../models/bookinstance');
 // Display list of all Authors.
 exports.library_list = function(req, res, next) {
 
-    LIbrary.find()
+    Library.find()
       .sort([['name', 'ascending']])
       .exec(function (err, list_libraries) {
         if (err) { return next(err); }
@@ -40,13 +40,23 @@ exports.library_detail = function(req, res, next) {
 
 };
 
-// Display Author create form on GET.
-exports.library_create_get = function(req, res, next) {       
-    res.render('library_form', { title: 'Create Library'});
+// Display book create form on GET.
+exports.library_create_get = function(req, res, next) { 
+    // Get all authors and genres, which we can use for adding to our book.
+    async.parallel({
+        books: function(callback) {
+            //buscamos todos los libros y decimos que nos de todos los datos de los libros
+            BookInstance.find().populate('book').exec(callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        res.render('library_form', { title: 'Create Library', books: results.books });
+    });
+    
 };
 
 // Handle book create on POST.
-exports.book_create_post = [
+exports.library_create_post = [
     // Convert the genre to an array.
     (req, res, next) => {
         if(!(req.library.book instanceof Array)){
@@ -58,11 +68,7 @@ exports.book_create_post = [
         next();
     },
 
-    // Validate fields.
-    body('name', 'Name must not be empty.').isLength({ min: 1 }).trim(),
 
-    // Sanitize fields (using wildcard).
-    sanitizeBody('*').escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {
@@ -138,7 +144,7 @@ exports.library_delete_post = function(req, res, next) {
         if (err) { return next(err); }
         // Success
         // Author has no books. Delete object and redirect to the list of authors.
-        Author.findByIdAndRemove(req.body.libraryid, function deleteLibrary(err) {
+        Library.findByIdAndRemove(req.body.libraryid, function deleteLibrary(err) {
             if (err) { return next(err); }
             // Success - go to author list
             res.redirect('/catalog/libraries')
@@ -147,11 +153,11 @@ exports.library_delete_post = function(req, res, next) {
 };
 
 // Display Author update form on GET.
-exports.author_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Author update GET');
+exports.library_update_get = function(req, res) {
+    res.send('NOT IMPLEMENTED: Library update GET');
 };
 
 // Handle Author update on POST.
-exports.author_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Author update POST');
+exports.library_update_post = function(req, res) {
+    res.send('NOT IMPLEMENTED: Library update POST');
 };
