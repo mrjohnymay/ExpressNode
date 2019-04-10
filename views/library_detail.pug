@@ -1,20 +1,24 @@
 extends layout
 
 block content
-
-  h1 Library: #{library.name}
+  h1 #{library.name}
   
-  p #[strong Title:] 
-    a(href=bookinstance.book.url) #{bookinstance.book.title}
-  ul
-    each bookinstance in library_list
-        li 
-            a(href=bookinstance.url) #{bookinstance.book}
-            | (#{bookinstance.imprint} | #{bookinstance.due_back}) 
-            each status in bookinstance.status
-                p #{status}
-    else
-        p This Library has no bookinstances
+  p #[strong City:] 
+    p #{library.city}
+  p #[strong Books:]&nbsp;
+    ul
+    each book in library.books
+      li Title: 
+        a(href=book.book.url) #{book.book.title}&nbsp;
+        | | Imprint:  
+        a(href=book.url) #{book.imprint}
 
-  p #[strong City:] #{library.city} 
       
+    else
+      p There are no books in this library.
+
+  hr
+  p
+    a(href=library.url+'/delete') Delete Library
+  p
+    a(href=library.url+'/update') Update Library

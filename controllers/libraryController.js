@@ -1,6 +1,7 @@
 var Library = require('../models/library');
 var async = require('async');
 var BookInstance = require('../models/bookinstance');
+var City = require('../models/city');
 
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -23,17 +24,18 @@ exports.library_detail = function(req, res, next) {
 
     async.parallel({
         library: function(callback) {
-            Library.findById(req.params.id)
+            /*Hacemos populate de los Bookinstances para luego hacer otro populate nesteado del libro de ese bookinstance*/ 
+            Library.findById(req.params.id).populate({
+                path:'books',
+                populate: {
+                    path: 'book'
+                }})
               .exec(callback)
-        }/*,
-        library_books: function(callback) {
-          Book.find({ 'author': req.params.id },'title summary')
-          .exec(callback)
-        },*/
+        }
     }, function(err, results) {
         if (err) { return next(err); } // Error in API usage.
         if (results.library==null) { // No results.
-            var err = new Error('LIbrary not found');
+            var err = new Error('Library not found');
             err.status = 404;
             return next(err);
         }
@@ -47,13 +49,17 @@ exports.library_detail = function(req, res, next) {
 exports.library_create_get = function(req, res, next) { 
     // Get all authors and genres, which we can use for adding to our book.
     async.parallel({
+        cities: function(callback) {
+            //buscamos todos los libros y decimos que nos de todos los datos de los libros
+            City.find().populate('city').exec(callback);
+        },
         books: function(callback) {
             //buscamos todos los libros y decimos que nos de todos los datos de los libros
             BookInstance.find().populate('book').exec(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('library_form', { title: 'Create Library', books: results.books });
+        res.render('library_form', { title: 'Create Library',books: results.books, cities: results.cities });
     });
     
 };
@@ -61,29 +67,28 @@ exports.library_create_get = function(req, res, next) {
 // Handle book create on POST.
 exports.library_create_post = [
     // Convert the genre to an array.
+
     (req, res, next) => {
-        if(!(req.library.book instanceof Array)){
-            if(typeof req.library.book==='undefined')
-            req.library.book=[];
+        if(!(req.body.book instanceof Array)){
+            if(typeof req.body.book==='undefined')
+                req.body.book=[];
             else
-            req.library.book=new Array(req.library.book);
+                req.body.book=new Array(req.library.book);
         }
         next();
     },
-
-
 
     // Process request after validation and sanitization.
     (req, res, next) => {
         
         // Extract the validation errors from a request.
         const errors = validationResult(req);
-
+        
         // Create a Library object with escaped and trimmed data.
         var library = new Library(
-          { name: req.library.name,
-            book: req.library.book,
-            city: req.library.city
+          { name: req.body.name,
+            books: req.body.book,
+            city: req.body.city
            });
 
         if (!errors.isEmpty()) {
@@ -112,10 +117,10 @@ exports.library_create_post = [
         }
         else {
             // Data from form is valid. Save book.
-            book.save(function (err) {
+            library.save(function (err) {
                 if (err) { return next(err); }
                    //successful - redirect to new book record.
-                   res.redirect(book.url);
+                   res.redirect(library.url);
                 });
         }
     }

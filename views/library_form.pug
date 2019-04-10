@@ -6,18 +6,18 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='name') Name:
-      input#first_name.form-control(type='text' placeholder='Name' name='Name' required='true' value=(undefined===library ? '' : library.name) )
+      input#first_name.form-control(type='text' placeholder='Name' name='name' required='true' value=(undefined===library ? '' : library.name) )
     div.form-group
       each bookI in books
           div(style='display: inline; padding-right:10px;')
-            input.checkbox-input(type='checkbox', name='book', id=bookI._id, value=bookI._id, checked=bookI.checked )
+            input.checkbox-input(type='checkbox', name='book', id=bookI._id, value=bookI._id)
             label(for=bookI._id) #{bookI.book.title}
     div.form-group
-      label(for='cities') Cities:
-      select
+      label(for='city') Cities:
+      select(name="city")
         each city in cities
           div(style='display: inline; padding-right:10px;')
-            option (value=city.name)  #{city.name}
+            option(value=city.name)  #{city.name}
         else
           p There are no cities.
     button.btn.btn-primary(type='submit') Submit

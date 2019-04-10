@@ -166,6 +166,6 @@ router.post('/city/:id/update', city_controller.city_update_post);
 router.get('/city/:id', city_controller.city_detail);
 
 // GET request for list of all city.
-router.get('/citys', city_controller.city_list);
+router.get('/cities', city_controller.city_list);
 
 module.exports = router;
