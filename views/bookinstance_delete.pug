@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h1 ID: #{bookinstance._id}
+  
+    ul
+        li Imprint: #{bookinstance.imprint} 
+        li Status: #{book.status} 
+
+    p Do you really want to delete this B-Word?
+
+    form(method='POST' action='')
+        div.form-group
+        input#bookinstanceid.form-control(type='hidden',name='bookinstanceid', required='true', value=bookinstance._id )
+
+        button.btn.btn-primary(type='submit') Delete
