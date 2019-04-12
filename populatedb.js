@@ -16,11 +16,14 @@ var Author = require('./models/author')
 var Genre = require('./models/genre')
 var BookInstance = require('./models/bookinstance')
 var Library = require('./models/library')
+var City = require('./models/city')
 
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
-mongoose.connect(mongoDB, { useNewUrlParser: true });
+//mongoose.connect( userArgs[0], { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/libreria', { useNewUrlParser: true });
+
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -30,6 +33,7 @@ var genres = []
 var books = []
 var bookinstances = []
 var libraries = []
+var cities = []
 
 function authorCreate(first_name, family_name, d_birth, d_death, cb) {
   authordetail = {first_name:first_name , family_name: family_name }
@@ -106,10 +110,9 @@ function bookInstanceCreate(book, imprint, due_back, status, cb) {
   }  );
 }
 
-function libraryCreate(name, books, city) {
+function libraryCreate(name, books, city, cb) {
   librarydetail = { 
     name: name,
-    books: books,
     city: city
   }
   if (books != false) librarydetail.books = books
@@ -126,7 +129,7 @@ function libraryCreate(name, books, city) {
   }  );
 }
 
-function cityCreate(name, population) {
+function cityCreate(name, population, cb) {
   var city = new City({ name: name, population: population });
        
   city.save(function (err) {
@@ -242,22 +245,71 @@ function createBookInstances(cb) {
         cb);
 }
 
-function createLibraries(cb) {
+function createCities(cb) {
   async.parallel([
     function(callback) {
-      libraryCreate("Libreria Alvarez", books[0], city[0])
+      cityCreate("Terrassa", 215121, callback)
+    },
+    function(callback) {
+      cityCreate("Sabadell", 208246, callback)
+    },
+    function(callback) {
+      cityCreate("Rubi", 75167, callback)
+    },
+    function(callback) {
+      cityCreate("Manresa", 74752, callback)
+    },
+    function(callback) {
+      cityCreate("Martorell", 27645, callback)
+    },
+    function(callback) {
+      cityCreate("Badalona", 200000, callback)
+    },
+    function(callback) {
+      cityCreate("Barcelona", 1609000, callback)
+    },
+    function(callback) {
+      cityCreate("Hospitalet de Llobregat", 254804, callback)
+    },
+    function(callback) {
+      cityCreate("Cornella de Llobregat", 86072, callback)
+    },
+    function(callback) {
+      cityCreate("Sant Cugat", 88921, callback)
     }
     ],
     // Optional callback
     cb);
 }
 
-
+function createLibraries(cb) {
+  async.parallel([
+    function(callback) {
+      libraryCreate("Libreria Alvarez", bookinstances[0], cities[0].name, callback)
+    },
+    function(callback) {
+      libraryCreate("Libreria Ivan", bookinstances[1], cities[1].name, callback)
+    },
+    function(callback) {
+      libraryCreate("Libreria Carlos", bookinstances[2], cities[2].name, callback)
+    },
+    function(callback) {
+      libraryCreate("Libreria Alex", bookinstances[3], cities[3].name, callback)
+    },
+    function(callback) {
+      libraryCreate("Libreria Fede", bookinstances[4], cities[4].name, callback)
+    },
+    ],
+    // Optional callback
+    cb);
+}
 
 async.series([
     createGenreAuthors,
     createBooks,
-    createBookInstances
+    createBookInstances,
+    createCities,
+    createLibraries
 ],
 // Optional callback
 function(err, results) {

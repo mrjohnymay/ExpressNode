@@ -6,7 +6,7 @@ var LibrarySchema = new Schema(
   {
     name: {type: String, required: true, max: 100},
     books: [{type: Schema.Types.ObjectId, ref: 'BookInstance'}], //referenciamos a las bookinstance
-    city:{type: String, required: true, ref: 'Cities'}
+    city: {type: String, required: true, ref: 'City'}
   }
 );
 

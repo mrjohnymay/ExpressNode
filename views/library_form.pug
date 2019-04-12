@@ -10,7 +10,7 @@ block content
     div.form-group
       each bookI in books
           div(style='display: inline; padding-right:10px;')
-            input.checkbox-input(type='checkbox', name='book', id=bookI._id, value=bookI._id)
+            input.checkbox-input(type='checkbox', name='book', id=bookI._id, value=bookI._id, checked=bookI.checked)
             label(for=bookI._id) #{bookI.book.title}
     div.form-group
       label(for='city') Cities:
