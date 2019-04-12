@@ -21,8 +21,8 @@ var City = require('./models/city')
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
-//mongoose.connect( userArgs[0], { useNewUrlParser: true });
-mongoose.connect('mongodb://localhost:27017/libreria', { useNewUrlParser: true });
+mongoose.connect( 'mongodb://'+mongoDB, { useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/libreria', { useNewUrlParser: true });
 
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
@@ -285,19 +285,19 @@ function createCities(cb) {
 function createLibraries(cb) {
   async.parallel([
     function(callback) {
-      libraryCreate("Libreria Alvarez", bookinstances[0], cities[0].name, callback)
+      libraryCreate("Libreria Alvarez", bookinstances[0], cities[0], callback)
     },
     function(callback) {
-      libraryCreate("Libreria Ivan", bookinstances[1], cities[1].name, callback)
+      libraryCreate("Libreria Ivan", bookinstances[1], cities[1], callback)
     },
     function(callback) {
-      libraryCreate("Libreria Carlos", bookinstances[2], cities[2].name, callback)
+      libraryCreate("Libreria Carlos", bookinstances[2], cities[2], callback)
     },
     function(callback) {
-      libraryCreate("Libreria Alex", bookinstances[3], cities[3].name, callback)
+      libraryCreate("Libreria Alex", bookinstances[3], cities[3], callback)
     },
     function(callback) {
-      libraryCreate("Libreria Fede", bookinstances[4], cities[4].name, callback)
+      libraryCreate("Libreria Fede", bookinstances[4], cities[4], callback)
     },
     ],
     // Optional callback

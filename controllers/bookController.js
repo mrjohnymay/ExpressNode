@@ -30,6 +30,9 @@ exports.index = function(req, res) {
         },
         library_count: function(callback) {
             Library.countDocuments({}, callback);
+        },
+        city_count: function(callback) {
+            City.countDocuments({}, callback);
         }
     }, function(err, results) {
         res.render('index', { title: 'Local Library Home', error: err, data: results });

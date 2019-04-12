@@ -4,7 +4,8 @@ block content
   h1 #{library.name}
   
   p #[strong City:] 
-    p #{library.city}
+    p 
+      a(href=library.city.url) #{library.city.name}
   p #[strong Books:]&nbsp;
     ul
     each book in library.books
