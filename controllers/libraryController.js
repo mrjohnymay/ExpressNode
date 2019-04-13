@@ -9,9 +9,14 @@ const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all Authors.
 exports.library_list = function (req, res, next) {
+    var sort = new Array();
+    if (typeof req.query.libraryname !== 'undefined' && req.query.libraryname !== 'name') {
+        //si firstname no es undefined y tampoco es el valor por defecto añadimos la opcion al array
+        sort.push(['name', req.query.libraryname]);
+    }
 
     Library.find()
-        .sort([['name', 'ascending']])
+        .sort(sort.length > 0 ? sort : null)
         .exec(function (err, list_libraries) {
             if (err) { return next(err); }
             //Successful, so render

@@ -7,15 +7,38 @@ const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all Authors.
 exports.author_list = function (req, res, next) {
+    var sort = new Array();
+    if (typeof req.query.firstname !== 'undefined' && req.query.firstname !== 'name') {
+        //si firstname no es undefined y tampoco es el valor por defecto añadimos la opcion al array
+        sort.push(['first_name', req.query.firstname]);
+    }
+    if (typeof req.query.familyname !== 'undefined' && req.query.familyname !== 'name') {
+        sort.push(['family_name', req.query.familyname]);
+    }
+    if (typeof req.query.dateofbirth !== 'undefined' && req.query.dateofbirth !== 'date') {
+        sort.push(['date_of_birth', req.query.dateofbirth]);
+    }
+    if (typeof req.query.dateofdeath !== 'undefined' && req.query.dateofdeath !== 'date') {
+        sort.push(['date_of_death', req.query.dateofdeath]);
+    }
 
-    Author.find()
-        .sort([['family_name', 'ascending']])
-        .exec(function (err, list_authors) {
-            if (err) { return next(err); }
-            //Successful, so render
-            res.render('author_list', { title: 'Author List', author_list: list_authors });
-        });
-
+    if (sort.length > 0) { //si usamos ordenacion buscamos por ordenacion
+        Author.find()
+            .sort(sort)
+            .exec(function (err, list_authors) {
+                if (err) { return next(err); }
+                //Successful, so render
+                res.render('author_list', { title: 'Author List', author_list: list_authors });
+            });
+    } else { //si no dejamos como esta por defecto
+        Author.find()
+            .sort([['family_name', 'ascending']])
+            .exec(function (err, list_authors) {
+                if (err) { return next(err); }
+                //Successful, so render
+                res.render('author_list', { title: 'Author List', author_list: list_authors });
+            });
+    }
 };
 
 // Display detail page for a specific Author.

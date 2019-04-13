@@ -7,9 +7,17 @@ const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all Citys.
 exports.city_list = function (req, res, next) {
+  var sort = new Array();
+  if (typeof req.query.cityname !== 'undefined' && req.query.cityname !== 'name') {
+      //si firstname no es undefined y tampoco es el valor por defecto añadimos la opcion al array
+      sort.push(['name', req.query.cityname]);
+  }
+  if (typeof req.query.population !== 'undefined' && req.query.population !== 'population') {
+      sort.push(['population', req.query.population]);
+  }
   //Buscamos todas las ciudades y las ordenamos
   City.find()
-    .sort([['name', 'ascending']])
+    .sort(sort.length > 0 ? sort : null)
     .exec(function (err, list_city) {
       if (err) { return next(err); }
       //Successful, so render

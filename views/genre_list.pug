@@ -10,3 +10,15 @@ block content
 
     else
       li There are no genres.
+    
+    hr
+
+    h3 Filters
+        form.sort(method='GET' action='')
+          label
+            select#name.form-control(type='select'  name='genrename' required='true')
+              option(value='name') Name
+              option(value='asc') ASC
+              option(value='desc') DESC
+
+          button.btn.btn-primary(type='submit') Sort

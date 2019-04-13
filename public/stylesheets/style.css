@@ -3,3 +3,7 @@
   padding: 0;
   list-style: none;
 }
+
+form.sort label{
+  margin-right: 0.5rem
+}

@@ -10,3 +10,16 @@ block content
 
     else
       li There are no libraries.
+    
+    hr
+    
+    h3 Filters
+    
+    form.sort(method='GET' action='')
+      label
+        select#libraryname.form-control(type='select'  name='libraryname' required='true')
+          option(value='name') Name
+          option(value='asc') ASC
+          option(value='desc') DESC
+
+      button.btn.btn-primary(type='submit') Sort

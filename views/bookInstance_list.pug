@@ -18,3 +18,22 @@ block content
 
     else
       li There are no book copies in this library.
+    
+    hr
+
+    h3 Filters
+        form.sort(method='GET' action='')
+          //-label
+            select#book.form-control(type='select'  name='book' required='true')
+              option(value='bookname') Book
+              option(value='asc') ASC
+              option(value='desc') DESC
+          label
+            select#status.form-control(type='select'  name='status' required='true')
+              option(value='status') Status
+              option(value='Available') Available
+              option(value='Maintenance') Maintenance
+              option(value='Loaned') Loaned
+              option(value='Reserved') Reserved
+
+          button.btn.btn-primary(type='submit') Sort

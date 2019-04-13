@@ -41,8 +41,12 @@ exports.index = function(req, res) {
 
 // Display list of all Books.
 exports.book_list = function(req, res, next) {
-
-    Book.find({}, 'title author')
+    var sort = [];
+    if (typeof req.query.title !== 'undefined' && req.query.title !== 'name') {
+        //si title no es undefined y tampoco es el valor por defecto añadimos la opcion al array
+        sort.push(['title', req.query.title]);
+    }
+    Book.find({}, 'title author').sort(sort.length > 0 ? sort : null)
       .populate('author')
       .exec(function (err, list_books) {
         if (err) { return next(err); }

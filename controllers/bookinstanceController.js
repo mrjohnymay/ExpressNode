@@ -7,8 +7,17 @@ var async = require('async');
 
 // Display list of all BookInstances.
 exports.bookinstance_list = function(req, res, next) {
-
-    BookInstance.find()
+    var sort ;
+    var find = {};
+    if (typeof req.query.book !== 'undefined' && req.query.book !== 'bookname') {
+        //si firstname no es undefined y tampoco es el valor por defecto añadimos la opcion al array
+        sort = {'book.title': req.query.book};
+    }
+    if (typeof req.query.status !== 'undefined' && req.query.status !== 'status') {
+        find.status =  req.query.status;
+    }
+    //buscamos por status y añadimos sort si es que tiene sort
+    BookInstance.find(find.status ? find : null).sort(sort)
         .populate('book')
         .exec(function (err, list_bookinstances) {
         if (err) { return next(err); }
