@@ -2,18 +2,8 @@ extends layout
 
 block content
   h1= title
-  
-  ul
-    each library in library_list
-      li 
-        a(href=library.url) #{library.name} 
 
-    else
-      li There are no libraries.
-    
-    hr
-    
-    h3 Filters
+  h3 Filters
     
     form.sort(method='GET' action='')
       label
@@ -23,3 +13,13 @@ block content
           option(value='desc') DESC
 
       button.btn.btn-primary(type='submit') Sort
+  
+  hr
+  
+  ul
+    each library in library_list
+      li 
+        a(href=library.url) #{library.name} 
+
+    else
+      li There are no libraries.

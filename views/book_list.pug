@@ -2,6 +2,18 @@ extends layout
 
 block content
   h1= title
+
+  h3 Filters
+    form.sort(method='GET' action='')
+      label
+        select#firstname.form-control(type='select'  name='title' required='true')
+          option(value='name') Title
+          option(value='asc') ASC
+          option(value='desc') DESC
+
+      button.btn.btn-primary(type='submit') Sort
+
+  hr
   
   ul
     each book in book_list
@@ -12,14 +24,4 @@ block content
     else
       li There are no books.
     
-    hr
 
-    h3 Filters
-        form.sort(method='GET' action='')
-          label
-            select#firstname.form-control(type='select'  name='title' required='true')
-              option(value='name') Title
-              option(value='asc') ASC
-              option(value='desc') DESC
-
-          button.btn.btn-primary(type='submit') Sort

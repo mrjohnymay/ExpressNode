@@ -2,18 +2,8 @@ extends layout
 
 block content
   h1= title
-  
-  ul
-    each author in author_list
-      li 
-        a(href=author.url) #{author.name} 
-        |  (#{author.date_of_birth_formatted} - #{author.date_of_death_formatted})
-    else
-      li There are no authors.
-    
-    hr
 
-    h3 Filters
+  h3 Filters
         form.sort(method='GET' action='')
           label
             select#firstname.form-control(type='select'  name='firstname' required='true')
@@ -37,3 +27,13 @@ block content
               option(value='desc') DESC
 
           button.btn.btn-primary(type='submit') Sort
+  hr
+  
+  ul
+    each author in author_list
+      li 
+        a(href=author.url) #{author.name} 
+        |  (#{author.date_of_birth_formatted} - #{author.date_of_death_formatted})
+    else
+      li There are no authors.
+    

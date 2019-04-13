@@ -2,6 +2,22 @@ extends layout
 
 block content
   h1= title
+
+  h3 Filters
+    form.sort(method='GET' action='')
+      label
+        select#cityname.form-control(type='select'  name='cityname' required='true')
+          option(value='name') Name
+          option(value='asc') ASC
+          option(value='desc') DESC
+      label
+        select#population.form-control(type='select'  name='population' required='true')
+          option(value='population') Population
+          option(value='asc') ASC
+          option(value='desc') DESC
+
+      button.btn.btn-primary(type='submit') Sort
+  hr
   
   ul
     each city in city_list
@@ -11,20 +27,3 @@ block content
 
     else
       li There are no cities.
-    
-    hr
-
-    h3 Filters
-        form.sort(method='GET' action='')
-          label
-            select#cityname.form-control(type='select'  name='cityname' required='true')
-              option(value='name') Name
-              option(value='asc') ASC
-              option(value='desc') DESC
-          label
-            select#population.form-control(type='select'  name='population' required='true')
-              option(value='population') Population
-              option(value='asc') ASC
-              option(value='desc') DESC
-
-          button.btn.btn-primary(type='submit') Sort
